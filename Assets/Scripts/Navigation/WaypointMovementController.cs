@@ -6,8 +6,7 @@ using System;
 
 public class WaypointMovementController : MonoBehaviour 
 {
-    public event Action<Waypoint> WaypointReached;
-    public Waypoint CurrentWaypoint => _currentWaypoint;
+    public event Action<Waypoint> WaypointReached;    
 
     [SerializeField] private Waypoint[] _waypoints;
     private NavMeshAgent _agent;

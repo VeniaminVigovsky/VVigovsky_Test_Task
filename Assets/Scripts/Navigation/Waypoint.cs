@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class Waypoint : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public EnemyController EnemyController { get; private set; }
+
+    private bool _isInit;
+
+    private void Awake()
     {
-        
+        Init();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Init()
     {
-        
+        if (_isInit) return;
+
+        EnemyController = GetComponent<EnemyController>();
+
+        _isInit = true;
     }
 }

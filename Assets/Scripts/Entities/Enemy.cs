@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : AbstractEntity
+public class Enemy : AbstractEntity, IDamagable
 {
-    //health
-    //ragdoll
-    //animator
+    public void Damage()
+    {
+        gameObject.SetActive(false);
+    }
 }
