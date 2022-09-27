@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour, IGameStateProcessor
     public GameStateEventMediator GameStateEventMediator => _gameStateEventMediator;
 
     [SerializeField] private GameStateEventMediator _gameStateEventMediator;
-    [SerializeField] private Camera _camera;
     
     private GameStateController _gameStateController;
 
@@ -21,6 +20,8 @@ public class GameManager : MonoBehaviour, IGameStateProcessor
     private void Awake()
     {
         Init();
+        _sceneLoader.LoadUIScene();
+        Invoke("Foo", 1.0f);
     }
 
     private void OnDestroy()
@@ -62,16 +63,14 @@ public class GameManager : MonoBehaviour, IGameStateProcessor
         if (_sceneLoader == null) return;
 
 
-        _sceneLoader.UnloadCurrenLevelScene();
-        _camera.gameObject.SetActive(true);
+        _sceneLoader.UnloadCurrenLevelScene();        
         Invoke("Foo", 2.0f);
         
     }
 
     private void Foo()
     {
-        _sceneLoader.LoadLevel(1);
-        _camera.gameObject.SetActive(false);
+        _sceneLoader.LoadLevel(1);        
         _gameStateController.ChangeState(GameState.LevelLoaded);
     }
 }
