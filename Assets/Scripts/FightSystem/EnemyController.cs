@@ -4,25 +4,41 @@ using UnityEngine;
 using System;
 
 public class EnemyController : MonoBehaviour
-{
-    public event Action AllEnemiesDead;
+{       
+    
+    [SerializeField] private float _checkRadius = 10.0f;
 
-    public Enemy[] Enemies => _enemies;
+    private List<Enemy> _enemies = new List<Enemy>();
 
-    [SerializeField] private Enemy[] _enemies;
+    public void FindEnemies()
+    {       
 
-    private bool _checkForEnemies = true;
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _checkRadius);
+        if (colliders != null)
+        {
+            foreach (var collider in colliders)
+            {
+                if (collider.TryGetComponent<Enemy>(out var enemy))
+                {
+                    _enemies.Add(enemy);
+                }
+            }            
+        }
+    }
 
-    private void Update()
-    {
-        if (!_checkForEnemies) return;
-
+    public bool AllEnemiesDead()
+    { 
         foreach (var enemy in _enemies)
         {
-            if (enemy.gameObject.activeInHierarchy) return;
+            if (enemy.gameObject.activeInHierarchy) return false;
         }
+        _enemies.Clear();
+        return true;
+     
+    }
 
-        AllEnemiesDead?.Invoke();
-        _checkForEnemies = false;
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, _checkRadius);
     }
 }

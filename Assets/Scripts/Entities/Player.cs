@@ -4,32 +4,29 @@ using UnityEngine;
 
 public class Player : AbstractEntity
 {
-    private IState _moveState;
-    private IState _attackState;
+    private MoveToWaypointState _moveState;
+    private AttackState _attackState;
+    private IdleState _idleState;
 
     private void Awake()
     {
         _stateMachine = new StateMachine();
         var weaponController = GetComponent<WeaponController>();
-        _attackState = new AttackState(weaponController);
+        var enemyController = GetComponent<EnemyController>();
+        _attackState = new AttackState(weaponController, enemyController);
         var waypointController = GetComponent<WaypointMovementController>();
         _moveState = new MoveToWaypointState(waypointController);
-        if (waypointController != null)
-        {
-            waypointController.WaypointReached += (waypoint) =>
-            {
-                var enemyController = waypoint.EnemyController;
-                if (enemyController != null)
-                {
-                    if (enemyController.Enemies.Length > 0)
-                        enemyController.AllEnemiesDead += () => _stateMachine?.ChangeState(_moveState);
-                    else return;
-               
-                }
-                _stateMachine?.ChangeState(_attackState);
-            };
-        }
+        _idleState = new IdleState();
 
+        _stateMachine.AddTransition(_moveState, _attackState, 
+            () => waypointController.IsWaypointReached);
+        _stateMachine.AddTransition(_attackState, _moveState,
+           () => enemyController.AllEnemiesDead() &&
+           waypointController.HasWaypointsLeft());
+        _stateMachine.AddTransition(_attackState, _idleState,
+            () => enemyController.AllEnemiesDead() &&
+            !waypointController.HasWaypointsLeft());
+       
         
     }
 

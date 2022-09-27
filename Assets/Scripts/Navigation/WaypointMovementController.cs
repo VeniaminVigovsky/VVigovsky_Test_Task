@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using System;
 
 public class WaypointMovementController : MonoBehaviour 
 {
-    public event Action<Waypoint> WaypointReached;    
+    public bool IsWaypointReached { get; private set; }
 
     [SerializeField] private Waypoint[] _waypoints;
     private NavMeshAgent _agent;
@@ -47,6 +46,7 @@ public class WaypointMovementController : MonoBehaviour
         {
             _currentWaypoint = _waypointsQueue.Dequeue();
             _agent.isStopped = false;
+            IsWaypointReached = false;
             _agent.SetDestination(_currentWaypoint.transform.position);
         }
     }
@@ -62,10 +62,16 @@ public class WaypointMovementController : MonoBehaviour
         }
     }
 
+    public bool HasWaypointsLeft()
+    {
+        if (_waypointsQueue == null) return false;
+        else return _waypointsQueue.Count > 0;
+    }
+
     private void Stop()
     {
         _agent.isStopped = true;
-        WaypointReached?.Invoke(_currentWaypoint);        
+        IsWaypointReached = true;    
     }
 
    
