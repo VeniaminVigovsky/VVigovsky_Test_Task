@@ -23,7 +23,7 @@ public class WeaponController : MonoBehaviour
     
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1) && _isEnabled)
+        if (Input.GetMouseButtonDown(0) && _isEnabled)
         {
             Init();
 

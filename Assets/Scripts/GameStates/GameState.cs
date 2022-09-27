@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum GameState
 {
+    LevelLoaded,
     LevelStart,
     LevelEnd,
     LevelRestart
