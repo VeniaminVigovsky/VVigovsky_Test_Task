@@ -7,7 +7,7 @@ public class WaypointMovementController : MonoBehaviour
 {
     public bool IsWaypointReached { get; private set; }
 
-    [SerializeField] private Waypoint[] _waypoints;
+    [SerializeField] private WaypointsParent _waypointsParent;
     private NavMeshAgent _agent;
     private Queue<Waypoint> _waypointsQueue;
     private Waypoint _currentWaypoint;
@@ -24,14 +24,8 @@ public class WaypointMovementController : MonoBehaviour
         if (_isInit == true) return;
 
         _agent = GetComponent<NavMeshAgent>();
-        _waypointsQueue = new Queue<Waypoint>();
-        if (_waypoints != null)
-        {
-            foreach (var wayPoint in _waypoints)
-            {
-                _waypointsQueue.Enqueue(wayPoint);
-            }
-        }
+        if (_waypointsParent != null)
+            _waypointsQueue = _waypointsParent.GetWaypointQueue();
 
         if (_agent != null) _agent.isStopped = true;
 
