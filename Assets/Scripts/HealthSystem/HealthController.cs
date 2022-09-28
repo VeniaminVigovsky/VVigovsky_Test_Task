@@ -7,11 +7,9 @@ public class HealthController : MonoBehaviour, IDamagable
 {
     [SerializeField] private int _maxHealth;
     [SerializeField] private UnityEvent<float> _healthAmountChanged;
-
     private int _currentHealth;
 
     private bool _isInit;
-
 
     private void Awake()
     {

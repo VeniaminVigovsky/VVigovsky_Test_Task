@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponController : MonoBehaviour
+public class WeaponController : MonoBehaviour, IInputReceiver
 {
     public bool IsEnabled
     {
         set => _isEnabled = value;
     }
 
+    public InputEventMediator InputEventMediator => _inputEventMediator;
+    [SerializeField] private InputEventMediator _inputEventMediator;
     [SerializeField] private Bullet _bulletPrefab;
     [SerializeField] private float _bulletSpeed = 100;
     [SerializeField] private int _bulletDamage = 10;
@@ -22,25 +24,30 @@ public class WeaponController : MonoBehaviour
     {
         Init();
     }
-    
-    private void Update()
+
+    private void OnDestroy()
     {
-        if (Input.GetMouseButtonDown(0) && _isEnabled)
-        {
-            Init();
+        if (_inputEventMediator != null)
+            _inputEventMediator.InputReceived -= OnInputReceived;
+    }
 
-            var bullet = _bulletPool.GetFromPool();
+    public void OnInputReceived()
+    {
+        if (!_isInit) Init();
 
-            var pos = Input.mousePosition;
-            pos.z = 4;
-            var bulletPos = _camera.ScreenToWorldPoint(pos);
-            bullet.transform.position = bulletPos;
-            Ray ray = _camera.ScreenPointToRay(pos);
-            var rayPoint = ray.GetPoint(100);
-            bullet.transform.LookAt(rayPoint); 
+        if (!_isEnabled) return;
 
-            bullet?.Shoot(_bulletSpeed, _bulletDamage);
-        }
+        var bullet = _bulletPool.GetFromPool();
+
+        var pos = Input.mousePosition;
+        pos.z = 4;
+        var bulletPos = _camera.ScreenToWorldPoint(pos);
+        bullet.transform.position = bulletPos;
+        Ray ray = _camera.ScreenPointToRay(pos);
+        var rayPoint = ray.GetPoint(100);
+        bullet.transform.LookAt(rayPoint);
+
+        bullet?.Shoot(_bulletSpeed, _bulletDamage);
     }
 
     private void Init()
@@ -51,6 +58,9 @@ public class WeaponController : MonoBehaviour
         {
             _bulletPool = new ObjectPool<Bullet>(_bulletPrefab, 5, transform);
         }
+
+        if (_inputEventMediator != null)
+            _inputEventMediator.InputReceived += OnInputReceived;
 
         _camera = Camera.main;
         IsEnabled = false;

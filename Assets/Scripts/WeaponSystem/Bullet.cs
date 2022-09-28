@@ -50,12 +50,15 @@ public class Bullet : MonoBehaviour
 
     public void Shoot(float speed, int damage)
     {
+        if (!_isInit) Init();
         _damage = damage;
         _rb.velocity = transform.forward * speed;
     }
 
     private void DisableBullet()
     {
+        if (!_isInit) Init();
+
         _rb.velocity = new Vector3(0.0f, 0.0f, 0.0f);
         gameObject.SetActive(false);
     }

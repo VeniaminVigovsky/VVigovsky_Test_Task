@@ -41,6 +41,5 @@ public class AttackState : IState
     public void Tick()
     {        
         
-    }
-    
+    }    
 }

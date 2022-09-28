@@ -18,6 +18,5 @@ public class WaypointsParent : MonoBehaviour
         }
 
         return queue;
-
     }
 }

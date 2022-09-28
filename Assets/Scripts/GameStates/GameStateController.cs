@@ -10,5 +10,4 @@ public class GameStateController : MonoBehaviour
     {
         _eventMediator?.OnGameStateChanged(gameState);
     }
-
 }

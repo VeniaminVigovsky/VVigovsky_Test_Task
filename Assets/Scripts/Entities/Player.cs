@@ -9,7 +9,7 @@ public class Player : AbstractEntity, IGameStateProcessor
     private MoveToWaypointState _moveState;
     private AttackState _attackState;    
     private EndGameState _winState;
-
+    private IdleState _idleState;
 
     public override void Init()
     {
@@ -33,11 +33,13 @@ public class Player : AbstractEntity, IGameStateProcessor
             () => enemyController.AllEnemiesDead() &&
             !waypointController.HasWaypointsLeft());
 
+        _idleState = new IdleState();
+        _stateMachine.ChangeState(_idleState);
+
         if (_gameStateEventMediator != null)
             _gameStateEventMediator.GameStateChanged += ProcessGameState;
 
         _isInit = true;
-
     }
 
     private void OnDestroy()

@@ -6,7 +6,6 @@ using UnityEngine;
 public class MoveToWaypointState : IState
 {  
     private WaypointMovementController _waypointMovementController;
-
     public MoveToWaypointState(WaypointMovementController waypointMovementController)
     {        
         _waypointMovementController = waypointMovementController;
@@ -15,7 +14,6 @@ public class MoveToWaypointState : IState
     public void EnterState()
     {
         _waypointMovementController?.MoveToNextPoint();
-
     }
 
     public void ExitState()
@@ -27,6 +25,4 @@ public class MoveToWaypointState : IState
     {
         _waypointMovementController?.CheckPosition();
     }
-
-
 }

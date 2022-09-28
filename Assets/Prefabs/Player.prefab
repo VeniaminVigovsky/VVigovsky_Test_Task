@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e08e8e48733309349b86b06f1f44bcc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputEventMediator: {fileID: 11400000, guid: 6a18f0b509dad2e49aa98ec62dd2cd5d, type: 2}
   _bulletPrefab: {fileID: 1186131015494309142, guid: c527012da9c09324199184c585ead797, type: 3}
   _bulletSpeed: 30
   _bulletDamage: 20

@@ -12,5 +12,4 @@ public class RagdollController : MonoBehaviour
         _entityCollider.enabled = !enabled;
         _animator.enabled = !enabled;
     }
-
 }

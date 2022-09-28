@@ -66,7 +66,5 @@ public class WaypointMovementController : MonoBehaviour
     {
         _agent.isStopped = true;
         IsWaypointReached = true;    
-    }
-
-   
+    }   
 }

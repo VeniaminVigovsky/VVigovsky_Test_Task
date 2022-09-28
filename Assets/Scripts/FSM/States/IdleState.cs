@@ -6,7 +6,7 @@ public class IdleState : IState
 {
     public void EnterState()
     {
-        Debug.Log("end");
+        
     }
 
     public void ExitState()

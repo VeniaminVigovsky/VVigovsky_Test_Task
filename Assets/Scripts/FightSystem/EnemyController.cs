@@ -4,15 +4,13 @@ using UnityEngine;
 using System;
 
 public class EnemyController : MonoBehaviour
-{       
-    
+{
     [SerializeField] private float _checkRadius = 10.0f;
 
     private List<Enemy> _enemies = new List<Enemy>();
 
     public void FindEnemies()
-    {       
-
+    {
         Collider[] colliders = Physics.OverlapSphere(transform.position, _checkRadius);
         if (colliders != null)
         {
@@ -34,7 +32,6 @@ public class EnemyController : MonoBehaviour
         }
         _enemies.Clear();
         return true;
-
     }
 
 

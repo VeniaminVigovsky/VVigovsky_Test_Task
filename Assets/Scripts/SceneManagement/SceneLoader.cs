@@ -10,7 +10,7 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private SceneDB _sceneDB;
 
     private int _currentLevelSceneIndex = 2;
-    private int _uiSceneIndex = -1;
+    private int _uiSceneIndex = -1; //in case we need to unload the ui scene in the futire
 
     private bool _isInit;
 
