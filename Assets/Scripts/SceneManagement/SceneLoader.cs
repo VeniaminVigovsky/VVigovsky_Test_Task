@@ -5,14 +5,31 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+    public bool IsBusy { get; private set; }
+
     [SerializeField] private SceneDB _sceneDB;
 
     private int _currentLevelSceneIndex = 2;
     private int _uiSceneIndex = -1;
 
+    private bool _isInit;
+
+    private void Awake()
+    {
+        Init();
+    }
+
+    private void Init()
+    {
+        if (_isInit) return;        
+
+        _isInit = true;
+    }
+
     public void UnloadCurrenLevelScene()
     {
-        SceneManager.UnloadScene(_currentLevelSceneIndex);
+        if (!_isInit) Init();
+        StartCoroutine(UnloadScenAsyncCoroutine(_currentLevelSceneIndex));
     }
 
     public void LoadLevel(int levelNumber)
@@ -27,9 +44,33 @@ public class SceneLoader : MonoBehaviour
 
     private void LoadScene(SceneType sceneType, int levelNumber, out int sceneIndex)
     {
+        if (!_isInit) Init();
         int sceneBuildIndex = _sceneDB.GetSceneIndex(sceneType, levelNumber);
         sceneIndex = sceneBuildIndex;
-        SceneManager.LoadScene(sceneBuildIndex, LoadSceneMode.Additive);
+        StartCoroutine(LoadSceneAsyncCoroutine(sceneIndex));
     }
+
+    private IEnumerator UnloadScenAsyncCoroutine(int sceneIndex)
+    {
+        IsBusy = true;
+        var operation = SceneManager.UnloadSceneAsync(sceneIndex);
+        while (!operation.isDone)
+        {
+            yield return null;
+        }
+        IsBusy = false;
+    }
+
+    private IEnumerator LoadSceneAsyncCoroutine(int sceneIndex)
+    {
+        IsBusy = true;
+        var operation = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
+        while (!operation.isDone)
+        {
+            yield return null;
+        }
+        IsBusy = false;
+    }
+
     
 }

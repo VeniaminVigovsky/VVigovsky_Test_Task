@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
-{
+{ 
     private Rigidbody _rb;
     private bool _isInit;
 
     private float _lifeTime = 3f;
     private float _timeAlive;
+
+    private int _damage;
 
     private void Awake()
     {
@@ -32,7 +34,7 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         var damagable = collision.gameObject.GetComponent<IDamagable>();
-        if (damagable != null) damagable.Damage();
+        if (damagable != null) damagable.Damage(_damage);
 
         gameObject.SetActive(false);
     }
@@ -46,9 +48,10 @@ public class Bullet : MonoBehaviour
         _isInit = true;
     }
 
-    public void Shoot()
+    public void Shoot(float speed, int damage)
     {
-        _rb.velocity = transform.forward * 100;
+        _damage = damage;
+        _rb.velocity = transform.forward * speed;
     }
 
     private void DisableBullet()

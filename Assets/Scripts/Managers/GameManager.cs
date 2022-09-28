@@ -15,13 +15,14 @@ public class GameManager : MonoBehaviour, IGameStateProcessor
 
     private SceneLoader _sceneLoader;
 
+    private int _currentLevelNumber = 1;
+
     private bool _isInit;
 
     private void Awake()
     {
         Init();
-        _sceneLoader.LoadUIScene();
-        Invoke("Foo", 1.0f);
+        StartGame();
     }
 
     private void OnDestroy()
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour, IGameStateProcessor
 
         _gameStateActions[GameState.LevelRestart] = RestartGame;
 
-        _gameStateEventMediator.GameStateChanged += ProcessGameState;
+        _gameStateEventMediator.GameStateChanged += ProcessGameState;        
 
         _isInit = true;
     }
@@ -58,19 +59,50 @@ public class GameManager : MonoBehaviour, IGameStateProcessor
         }
     }
 
+    private void StartGame()
+    {
+        StartCoroutine(StartGameCoroutine());
+    }
+
+    private IEnumerator StartGameCoroutine()
+    {
+        _sceneLoader.LoadUIScene();
+        while (_sceneLoader.IsBusy)
+        {
+            yield return null;
+        }
+        LoadLevel();
+    }
+
     private void RestartGame()
     {
         if (_sceneLoader == null) return;
 
-
-        _sceneLoader.UnloadCurrenLevelScene();        
-        Invoke("Foo", 2.0f);
-        
+        StartCoroutine(RestartLevelCoroutine());        
     }
 
-    private void Foo()
+    private IEnumerator RestartLevelCoroutine()
     {
-        _sceneLoader.LoadLevel(1);        
+        _sceneLoader.UnloadCurrenLevelScene();
+        while (_sceneLoader.IsBusy)
+        {
+            yield return null;
+        }
+        LoadLevel();
+    }
+
+    private void LoadLevel()
+    {
+        StartCoroutine(LoadLevelCoroutine());
+    }
+
+    private IEnumerator LoadLevelCoroutine()
+    {
+        _sceneLoader.LoadLevel(_currentLevelNumber);
+        while (_sceneLoader.IsBusy)
+        {
+            yield return null;
+        }
         _gameStateController.ChangeState(GameState.LevelLoaded);
     }
 }

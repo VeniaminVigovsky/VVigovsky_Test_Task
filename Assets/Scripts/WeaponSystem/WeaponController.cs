@@ -10,6 +10,8 @@ public class WeaponController : MonoBehaviour
     }
 
     [SerializeField] private Bullet _bulletPrefab;
+    [SerializeField] private float _bulletSpeed = 100;
+    [SerializeField] private int _bulletDamage = 10;
     private ObjectPool<Bullet> _bulletPool;
     private Camera _camera;
     private bool _isInit;
@@ -37,7 +39,7 @@ public class WeaponController : MonoBehaviour
             var rayPoint = ray.GetPoint(100);
             bullet.transform.LookAt(rayPoint); 
 
-            bullet?.Shoot();
+            bullet?.Shoot(_bulletSpeed, _bulletDamage);
         }
     }
 

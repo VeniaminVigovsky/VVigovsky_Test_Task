@@ -10,18 +10,21 @@ public class Player : AbstractEntity, IGameStateProcessor
     private AttackState _attackState;    
     private EndGameState _winState;
 
-    private void Awake()
+
+    public override void Init()
     {
+        if (_isInit) return;
         _stateMachine = new StateMachine();
         var weaponController = GetComponent<WeaponController>();
         var enemyController = GetComponent<EnemyController>();
-        _attackState = new AttackState(weaponController, enemyController);
+        var cinemachineController = GetComponent<CinemachineController>();
+        _attackState = new AttackState(weaponController, enemyController, cinemachineController);
         var waypointController = GetComponent<WaypointMovementController>();
         _moveState = new MoveToWaypointState(waypointController);
         var gameStateController = GetComponent<GameStateController>();
         _winState = new EndGameState(gameStateController, GameState.LevelEnd);
 
-        _stateMachine.AddTransition(_moveState, _attackState, 
+        _stateMachine.AddTransition(_moveState, _attackState,
             () => waypointController.IsWaypointReached);
         _stateMachine.AddTransition(_attackState, _moveState,
            () => enemyController.AllEnemiesDead() &&
@@ -30,14 +33,17 @@ public class Player : AbstractEntity, IGameStateProcessor
             () => enemyController.AllEnemiesDead() &&
             !waypointController.HasWaypointsLeft());
 
-        _gameStateEventMediator.GameStateChanged += ProcessGameState;
-        
+        if (_gameStateEventMediator != null)
+            _gameStateEventMediator.GameStateChanged += ProcessGameState;
+
+        _isInit = true;
+
     }
 
     private void OnDestroy()
     {
-        _gameStateEventMediator.GameStateChanged -= ProcessGameState;
-
+        if (_gameStateEventMediator != null)
+            _gameStateEventMediator.GameStateChanged -= ProcessGameState;
     }
 
     public override void Update()

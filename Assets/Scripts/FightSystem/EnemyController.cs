@@ -30,15 +30,19 @@ public class EnemyController : MonoBehaviour
     { 
         foreach (var enemy in _enemies)
         {
-            if (enemy.gameObject.activeInHierarchy) return false;
+            if (!enemy.IsDead) return false;
         }
         _enemies.Clear();
         return true;
-     
+
     }
+
+
+#if UNITY_EDITOR
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, _checkRadius);
     }
+#endif
 }

@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 8426802416789477730}
   - component: {fileID: 6068323131219049065}
   - component: {fileID: 6588367117516327524}
-  m_Layer: 0
+  - component: {fileID: 8532830746256482969}
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,6 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletPrefab: {fileID: 1186131015494309142, guid: c527012da9c09324199184c585ead797, type: 3}
+  _bulletSpeed: 30
+  _bulletDamage: 20
 --- !u!114 &6068323131219049065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,6 +127,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _eventMediator: {fileID: 11400000, guid: 65a758ac3ae7a124786a02360e0910c7, type: 2}
+--- !u!136 &8532830746256482969
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5972813649442805980}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.84, z: 0}
 --- !u!1001 &2180304212275606080
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -145,7 +162,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4111819248598986, guid: f11fc98cf1e8d5547a9b2ec85cc9c664, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.06
       objectReference: {fileID: 0}
     - target: {fileID: 4111819248598986, guid: f11fc98cf1e8d5547a9b2ec85cc9c664, type: 3}
       propertyPath: m_LocalPosition.z
