@@ -5,6 +5,6 @@ using UnityEngine;
 public interface IInputReceiver
 {
     InputEventMediator InputEventMediator { get; }
-    void OnInputReceived();
+    void OnInputReceived(Vector3 inputPos);
 
 }

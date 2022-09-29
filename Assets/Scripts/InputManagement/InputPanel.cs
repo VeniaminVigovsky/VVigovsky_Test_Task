@@ -9,6 +9,18 @@ public class InputPanel : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        _inputMediator?.OnInputReceived();
+        Vector3 inputPos = new Vector3(0.0f, 0.0f, 0.0f);   
+
+#if UNITY_EDITOR
+        inputPos = Input.mousePosition;
+#else
+        if (Input.touchCount > 0)
+        {
+            var touch = Input.GetTouch(0);
+            inputPos = touch.position;
+        }
+#endif
+
+        _inputMediator?.OnInputReceived(inputPos);
     }
 }

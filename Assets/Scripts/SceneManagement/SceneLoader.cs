@@ -29,6 +29,7 @@ public class SceneLoader : MonoBehaviour
     public void UnloadCurrenLevelScene()
     {
         if (!_isInit) Init();
+        if (_currentLevelSceneIndex < 0) return;
         StartCoroutine(UnloadScenAsyncCoroutine(_currentLevelSceneIndex));
     }
 
@@ -47,6 +48,7 @@ public class SceneLoader : MonoBehaviour
         if (!_isInit) Init();
         int sceneBuildIndex = _sceneDB.GetSceneIndex(sceneType, levelNumber);
         sceneIndex = sceneBuildIndex;
+        if (sceneBuildIndex < 0) return;
         StartCoroutine(LoadSceneAsyncCoroutine(sceneIndex));
     }
 

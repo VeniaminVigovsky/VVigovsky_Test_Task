@@ -31,7 +31,7 @@ public class WeaponController : MonoBehaviour, IInputReceiver
             _inputEventMediator.InputReceived -= OnInputReceived;
     }
 
-    public void OnInputReceived()
+    public void OnInputReceived(Vector3 touchPos)
     {
         if (!_isInit) Init();
 
@@ -39,11 +39,11 @@ public class WeaponController : MonoBehaviour, IInputReceiver
 
         var bullet = _bulletPool.GetFromPool();
 
-        var pos = Input.mousePosition;
-        pos.z = 4;
-        var bulletPos = _camera.ScreenToWorldPoint(pos);
+        
+        touchPos.z = 4;
+        var bulletPos = _camera.ScreenToWorldPoint(touchPos);
         bullet.transform.position = bulletPos;
-        Ray ray = _camera.ScreenPointToRay(pos);
+        Ray ray = _camera.ScreenPointToRay(touchPos);
         var rayPoint = ray.GetPoint(100);
         bullet.transform.LookAt(rayPoint);
 
